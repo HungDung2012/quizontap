@@ -1,3 +1,5 @@
 .agents/
 .codex/
 .git/
+docs/
+node_modules/
