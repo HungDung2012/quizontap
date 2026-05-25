@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ôn tập Lịch sử Đảng</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="quiz-panel" aria-live="polite">
+        <header class="quiz-header">
+          <div>
+            <p class="eyebrow">Ôn tập trắc nghiệm</p>
+            <h1>Lịch sử Đảng</h1>
+          </div>
+          <div class="score-box">
+            <span id="score">0</span>
+            <small>Điểm</small>
+          </div>
+        </header>
+
+        <section class="chapter-picker" id="chapterPicker">
+          <div>
+            <h2>Chọn nội dung ôn tập</h2>
+            <p>Mỗi lần bắt đầu, hệ thống sẽ trộn thứ tự câu hỏi và đáp án.</p>
+          </div>
+          <div id="chapterButtons" class="chapter-buttons"></div>
+        </section>
+
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="progressText">Câu 1/1</span>
+            <span id="statusText">Chọn một đáp án</span>
+          </div>
+          <div class="progress-track">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <article class="question-card">
+          <h2 id="questionText"></h2>
+          <div id="options" class="options"></div>
+        </article>
+
+        <p id="feedback" class="feedback"></p>
+
+        <footer class="actions">
+          <button id="chooseChapterButton" class="button secondary" type="button">
+            Chọn chương
+          </button>
+          <button id="restartButton" class="button secondary" type="button">
+            Làm lại
+          </button>
+          <button id="nextButton" class="button primary" type="button" disabled>
+            Câu tiếp
+          </button>
+        </footer>
+      </section>
+    </main>
+
+    <script src="chapters.js"></script>
+    <script src="quiz-core.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
