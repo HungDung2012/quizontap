@@ -12,6 +12,7 @@
       score: 0,
       answered: false,
       selectedAnswer: null,
+      answers: [],
       isFinished: questions.length === 0,
     };
   }
@@ -40,6 +41,14 @@
         score: isCorrect === true ? state.score + 1 : state.score,
         answered: true,
         selectedAnswer,
+        answers: [
+          ...state.answers,
+          {
+            questionIndex: state.currentIndex,
+            selectedAnswer,
+            isCorrect,
+          },
+        ],
       },
       isCorrect,
     };

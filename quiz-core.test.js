@@ -29,6 +29,7 @@ function testInitialState() {
   assert.strictEqual(state.answered, false);
   assert.strictEqual(state.selectedAnswer, null);
   assert.strictEqual(state.isFinished, false);
+  assert.deepStrictEqual(state.answers, []);
   assert.deepStrictEqual(getCurrentQuestion(state), questions[0]);
 }
 
@@ -84,6 +85,25 @@ function testNextQuestionAndFinish() {
   assert.strictEqual(finished.score, 2);
 }
 
+function testAnswerHistoryTracksAnsweredQuestions() {
+  const firstAnswered = answerCurrentQuestion(createQuizState(questions), 0).state;
+  const secondQuestion = goToNextQuestion(firstAnswered);
+  const secondAnswered = answerCurrentQuestion(secondQuestion, 2).state;
+
+  assert.deepStrictEqual(secondAnswered.answers, [
+    {
+      questionIndex: 0,
+      selectedAnswer: 0,
+      isCorrect: false,
+    },
+    {
+      questionIndex: 1,
+      selectedAnswer: 2,
+      isCorrect: true,
+    },
+  ]);
+}
+
 function testPrepareQuestionsShufflesAnswersAndKeepsCorrectIndex() {
   const prepared = prepareQuestions(
     [
@@ -126,6 +146,7 @@ testCorrectAnswerIncrementsScore();
 testWrongAnswerDoesNotIncrementScore();
 testUnknownAnswerDoesNotMarkCorrectOrWrong();
 testNextQuestionAndFinish();
+testAnswerHistoryTracksAnsweredQuestions();
 testPrepareQuestionsShufflesAnswersAndKeepsCorrectIndex();
 testPrepareQuestionsShufflesQuestionOrder();
 

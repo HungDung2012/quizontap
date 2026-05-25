@@ -193,12 +193,67 @@ function renderResult() {
   questionText.textContent = knownAnswerCount
     ? `Bạn đạt ${quizState.score}/${knownAnswerCount} điểm`
     : `Bạn đã ôn tập ${totalQuestions} câu`;
-  optionsElement.innerHTML = "";
-  feedbackElement.textContent =
-    "Sửa file questions.js để thêm câu hỏi copy từ LMS, sau đó tải lại trang.";
+  renderWrongAnswers();
+  feedbackElement.textContent = "Bạn có thể làm lại hoặc chọn chương khác để ôn tiếp.";
   feedbackElement.className = "feedback";
   nextButton.disabled = true;
   nextButton.textContent = "Đã xong";
+}
+
+function renderWrongAnswers() {
+  const wrongAnswers = quizState.answers.filter(
+    (answer) => answer.isCorrect === false
+  );
+
+  optionsElement.innerHTML = "";
+
+  const wrapper = document.createElement("section");
+  wrapper.className = "wrong-review";
+
+  const title = document.createElement("h3");
+  title.textContent = wrongAnswers.length
+    ? `Câu trả lời sai (${wrongAnswers.length})`
+    : "Bạn không sai câu nào.";
+  wrapper.appendChild(title);
+
+  if (wrongAnswers.length) {
+    const list = document.createElement("div");
+    list.className = "wrong-list";
+
+    wrongAnswers.forEach((answer) => {
+      const question = quizState.questions[answer.questionIndex];
+      const item = document.createElement("article");
+      item.className = "wrong-item";
+
+      const questionTitle = document.createElement("h4");
+      questionTitle.textContent = question.question;
+
+      const selectedText = document.createElement("p");
+      selectedText.innerHTML = "<strong>Bạn chọn:</strong> ";
+      selectedText.append(
+        document.createTextNode(
+          getAnswerLabel(question.options[answer.selectedAnswer])
+        )
+      );
+
+      const correctText = document.createElement("p");
+      correctText.innerHTML = "<strong>Đáp án đúng:</strong> ";
+      correctText.append(
+        document.createTextNode(getAnswerLabel(question.options[question.answer]))
+      );
+
+      item.append(questionTitle, selectedText, correctText);
+      list.appendChild(item);
+    });
+
+    wrapper.appendChild(list);
+  }
+
+  optionsElement.appendChild(wrapper);
+}
+
+function getAnswerLabel(answerText) {
+  return answerText || "Không rõ đáp án";
 }
 
 function getStatusLabel() {

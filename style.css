@@ -246,6 +246,48 @@ h1 {
   background: var(--red-bg);
 }
 
+.wrong-review {
+  display: grid;
+  gap: 14px;
+}
+
+.wrong-review h3 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 20px;
+}
+
+.wrong-list {
+  display: grid;
+  gap: 12px;
+}
+
+.wrong-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px;
+}
+
+.wrong-item h4 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.wrong-item p {
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+.wrong-item p:last-child {
+  margin-bottom: 0;
+}
+
+.wrong-item strong {
+  color: var(--text);
+}
+
 .feedback {
   min-height: 28px;
   margin: 18px 0 0;
