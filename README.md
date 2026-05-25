@@ -28,20 +28,6 @@ node build-chapters.js
 
 Lệnh này tạo lại `chapters.js` cho web. Khi làm bài, app sẽ trộn thứ tự câu hỏi và trộn cả thứ tự đáp án, nhưng vẫn giữ đúng đáp án sau khi trộn.
 
-## Cách lấy câu hỏi từ LMS
-
-Trang LMS cần phiên đăng nhập, nên request trực tiếp từ bên ngoài có thể bị redirect về `/my-learning`. Dùng cách an toàn sau:
-
-1. Mở trang quiz trên LMS bằng trình duyệt đã đăng nhập.
-2. Bấm `F12` để mở DevTools.
-3. Vào tab `Console`.
-4. Mở file `lms-extractor.js`, copy toàn bộ nội dung và paste vào Console.
-5. Bấm `Enter`.
-6. Trình duyệt sẽ tải về file `questions.js`.
-7. Chép file vừa tải về vào đúng thư mục chương, ví dụ `question/chuong1`.
-8. Chạy `node build-chapters.js`.
-
-Không cần lưu tài khoản, mật khẩu hoặc cookie LMS trong source code.
 
 ## Kiểm tra logic
 
