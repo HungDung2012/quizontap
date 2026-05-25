@@ -257,35 +257,76 @@ h1 {
   font-size: 20px;
 }
 
-.wrong-list {
+.wrong-review-list {
   display: grid;
   gap: 12px;
 }
 
-.wrong-item {
+.wrong-review-item {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
   padding: 14px;
 }
 
-.wrong-item h4 {
+.wrong-review-item h4 {
   margin: 0 0 10px;
   font-size: 17px;
   line-height: 1.35;
 }
 
-.wrong-item p {
-  margin-bottom: 6px;
-  color: var(--muted);
+.wrong-option-list {
+  display: grid;
+  gap: 8px;
 }
 
-.wrong-item p:last-child {
-  margin-bottom: 0;
+.wrong-option {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px 8px 0;
 }
 
-.wrong-item strong {
+.wrong-option.correct {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+
+.wrong-option.selected-wrong {
+  border-color: var(--primary);
+  background: var(--red-bg);
+}
+
+.wrong-option-text {
+  line-height: 1.35;
+}
+
+.answer-markers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.answer-marker {
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.answer-marker.selected {
+  background: #f0ece5;
   color: var(--text);
+}
+
+.answer-marker.correct {
+  background: var(--green);
+  color: #fff;
 }
 
 .feedback {
@@ -304,10 +345,18 @@ h1 {
 }
 
 .actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 22px;
+  margin: 22px -28px -28px;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 14px 28px;
+  backdrop-filter: blur(8px);
 }
 
 .button {
@@ -362,5 +411,21 @@ h1 {
 
   .button {
     width: 100%;
+  }
+
+  .actions {
+    margin-right: -20px;
+    margin-left: -20px;
+    margin-bottom: -20px;
+    padding: 12px 20px;
+  }
+
+  .wrong-option {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .answer-markers {
+    grid-column: 2;
+    justify-content: flex-start;
   }
 }

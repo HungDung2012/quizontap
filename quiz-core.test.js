@@ -3,6 +3,7 @@ const assert = require("assert");
 const {
   answerCurrentQuestion,
   createQuizState,
+  getWrongAnswers,
   getCurrentQuestion,
   goToNextQuestion,
   prepareQuestions,
@@ -104,6 +105,20 @@ function testAnswerHistoryTracksAnsweredQuestions() {
   ]);
 }
 
+function testWrongAnswerReviewOnlyIncludesWrongAnswers() {
+  const firstAnswered = answerCurrentQuestion(createQuizState(questions), 0).state;
+  const secondQuestion = goToNextQuestion(firstAnswered);
+  const secondAnswered = answerCurrentQuestion(secondQuestion, 2).state;
+
+  assert.deepStrictEqual(getWrongAnswers(secondAnswered), [
+    {
+      questionIndex: 0,
+      selectedAnswer: 0,
+      isCorrect: false,
+    },
+  ]);
+}
+
 function testPrepareQuestionsShufflesAnswersAndKeepsCorrectIndex() {
   const prepared = prepareQuestions(
     [
@@ -147,6 +162,7 @@ testWrongAnswerDoesNotIncrementScore();
 testUnknownAnswerDoesNotMarkCorrectOrWrong();
 testNextQuestionAndFinish();
 testAnswerHistoryTracksAnsweredQuestions();
+testWrongAnswerReviewOnlyIncludesWrongAnswers();
 testPrepareQuestionsShufflesAnswersAndKeepsCorrectIndex();
 testPrepareQuestionsShufflesQuestionOrder();
 

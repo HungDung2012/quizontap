@@ -21,6 +21,10 @@
     return state.questions[state.currentIndex] || null;
   }
 
+  function getWrongAnswers(state) {
+    return state.answers.filter((answer) => answer.isCorrect === false);
+  }
+
   function answerCurrentQuestion(state, selectedAnswer) {
     if (state.answered || state.isFinished) {
       return {
@@ -104,6 +108,7 @@
     answerCurrentQuestion,
     createQuizState,
     getCurrentQuestion,
+    getWrongAnswers,
     goToNextQuestion,
     prepareQuestions,
   };

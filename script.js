@@ -193,17 +193,15 @@ function renderResult() {
   questionText.textContent = knownAnswerCount
     ? `Bạn đạt ${quizState.score}/${knownAnswerCount} điểm`
     : `Bạn đã ôn tập ${totalQuestions} câu`;
-  renderWrongAnswers();
+  renderWrongAnswerReview();
   feedbackElement.textContent = "Bạn có thể làm lại hoặc chọn chương khác để ôn tiếp.";
   feedbackElement.className = "feedback";
   nextButton.disabled = true;
   nextButton.textContent = "Đã xong";
 }
 
-function renderWrongAnswers() {
-  const wrongAnswers = quizState.answers.filter(
-    (answer) => answer.isCorrect === false
-  );
+function renderWrongAnswerReview() {
+  const wrongAnswers = QuizCore.getWrongAnswers(quizState);
 
   optionsElement.innerHTML = "";
 
@@ -216,44 +214,76 @@ function renderWrongAnswers() {
     : "Bạn không sai câu nào.";
   wrapper.appendChild(title);
 
-  if (wrongAnswers.length) {
-    const list = document.createElement("div");
-    list.className = "wrong-list";
+  if (!wrongAnswers.length) {
+    optionsElement.appendChild(wrapper);
+    return;
+  }
 
-    wrongAnswers.forEach((answer) => {
-      const question = quizState.questions[answer.questionIndex];
-      const item = document.createElement("article");
-      item.className = "wrong-item";
+  const list = document.createElement("div");
+  list.className = "wrong-review-list";
 
-      const questionTitle = document.createElement("h4");
-      questionTitle.textContent = question.question;
+  wrongAnswers.forEach((answer) => {
+    const question = quizState.questions[answer.questionIndex];
+    const item = document.createElement("article");
+    item.className = "wrong-review-item";
 
-      const selectedText = document.createElement("p");
-      selectedText.innerHTML = "<strong>Bạn chọn:</strong> ";
-      selectedText.append(
-        document.createTextNode(
-          getAnswerLabel(question.options[answer.selectedAnswer])
-        )
-      );
+    const questionTitle = document.createElement("h4");
+    questionTitle.textContent = `Câu ${answer.questionIndex + 1}: ${question.question}`;
 
-      const correctText = document.createElement("p");
-      correctText.innerHTML = "<strong>Đáp án đúng:</strong> ";
-      correctText.append(
-        document.createTextNode(getAnswerLabel(question.options[question.answer]))
-      );
+    const optionList = document.createElement("div");
+    optionList.className = "wrong-option-list";
 
-      item.append(questionTitle, selectedText, correctText);
-      list.appendChild(item);
+    question.options.forEach((option, optionIndex) => {
+      const isSelected = optionIndex === answer.selectedAnswer;
+      const isCorrect = optionIndex === question.answer;
+      const optionItem = document.createElement("div");
+      optionItem.className = "wrong-option";
+
+      if (isCorrect) {
+        optionItem.classList.add("correct");
+      }
+
+      if (isSelected && !isCorrect) {
+        optionItem.classList.add("selected-wrong");
+      }
+
+      const optionLetter = document.createElement("span");
+      optionLetter.className = "option-letter";
+      optionLetter.textContent = letters[optionIndex] || optionIndex + 1;
+
+      const optionText = document.createElement("span");
+      optionText.className = "wrong-option-text";
+      optionText.textContent = option;
+
+      const markers = document.createElement("span");
+      markers.className = "answer-markers";
+
+      if (isSelected) {
+        markers.appendChild(createAnswerMarker("Bạn chọn", "selected"));
+      }
+
+      if (isCorrect) {
+        markers.appendChild(createAnswerMarker("Đáp án đúng", "correct"));
+      }
+
+      optionItem.append(optionLetter, optionText, markers);
+      optionList.appendChild(optionItem);
     });
 
-    wrapper.appendChild(list);
-  }
+    item.append(questionTitle, optionList);
+    list.appendChild(item);
+  });
+
+  wrapper.appendChild(list);
 
   optionsElement.appendChild(wrapper);
 }
 
-function getAnswerLabel(answerText) {
-  return answerText || "Không rõ đáp án";
+function createAnswerMarker(text, type) {
+  const marker = document.createElement("span");
+  marker.className = `answer-marker ${type}`;
+  marker.textContent = text;
+  return marker;
 }
 
 function getStatusLabel() {
